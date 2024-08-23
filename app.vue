@@ -2,11 +2,17 @@
 const taskList = ref([{id: 1, title: "task 1", description: "description 1"}, {id: 2, title: "task 2", description: "description 2"}]);
 const titleText = ref("");
 const descriptionText = ref("");
+let nextId = taskList.value.length + 1;
 
 let addNewTask = () => {
-  taskList.value.push({id: taskList.value.length + 1, title: titleText.value, description: descriptionText.value});
+  taskList.value.push({id: nextId++, title: titleText.value, description: descriptionText.value});
   titleText.value = "";
   descriptionText.value = "";
+}
+
+let deleteTask = (id) => {
+  console.log(taskList)
+  taskList.value = taskList.value.filter(task => task.id !== id);
 }
 </script>
 
@@ -19,6 +25,6 @@ let addNewTask = () => {
       <input v-model="descriptionText" placeholder="add description here" />
       <button>Add Task</button>
     </form>
-    <Task v-for="task in taskList" :key="task.id" :title="task.title" :description="task.description" />
+    <Task v-for="task in taskList" :key="task.id" :title="task.title" :description="task.description" @deleteTask="deleteTask(task.id)" />
   </div>
 </template>
